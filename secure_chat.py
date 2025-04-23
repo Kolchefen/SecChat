@@ -10,6 +10,14 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes, hmac
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
+
+"""
+SecureChatApp
+A GUI-based secure chatting application utilizing AES-GCM, PBKDF2, web sockets
+to transfer information, and JSON to format messages. 
+
+© 2025 Zachary Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
+"""
 class SecureChatApp:
     def __init__(self, root):
         self.root = root
@@ -26,7 +34,7 @@ class SecureChatApp:
         # Encryption variables
         self.password = None
         self.key = None
-        self.key_update_interval = 30 * 60  # 30 minutes in seconds
+        self.key_update_interval = 30 * 60  # Key will update every 30 minutes 
         self.key_update_timer = None
         self.message_counter = 0
         
