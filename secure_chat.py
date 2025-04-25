@@ -16,7 +16,7 @@ SecureChatApp
 A GUI-based secure chatting application utilizing AES-GCM, PBKDF2, web sockets
 to transfer information, and JSON to format messages. 
 
-© 2025 Zachary "Claude" Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
+© 2025 Zachary Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
 """
 class SecureChatApp:
     def __init__(self, root):
