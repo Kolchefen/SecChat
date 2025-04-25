@@ -16,13 +16,13 @@ SecureChatApp
 A GUI-based secure chatting application utilizing AES-GCM, PBKDF2, web sockets
 to transfer information, and JSON to format messages. 
 
-© 2025 Zachary Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
+© 2025 Zachary "Claude" Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
 """
 class SecureChatApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Secure P2P Chat")
-        self.root.geometry("800x600")
+        self.root.geometry("600x600")
         
         # Connection variables
         self.connected = False
@@ -39,12 +39,17 @@ class SecureChatApp:
         self.message_counter = 0
         
         # UI setup
+        self.root
         self.setup_ui()
 
+    """
+    The main entry point of the program
+    """
     def setup_ui(self):
         # Main frame
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
         
         # Connection frame
         conn_frame = tk.Frame(main_frame)
@@ -74,7 +79,8 @@ class SecureChatApp:
         pass_frame.pack(fill=tk.X, pady=5)
         
         tk.Label(pass_frame, text="Shared Password:").pack(side=tk.LEFT, padx=5)
-        self.password_entry = tk.Entry(pass_frame, width=30, show="*")
+        self.password_entry = tk.Entry(pass_frame, width=30, show="*") # hide password from view
+        
         self.password_entry.pack(side=tk.LEFT, padx=5)
         
         self.set_password_button = tk.Button(pass_frame, text="Set Password", command=self.set_password)
@@ -123,18 +129,18 @@ class SecureChatApp:
             return
         
         self.password = password
-        self.derive_key_from_password()
+        self.update_key()
         self.update_key_button.config(state=tk.NORMAL)
         self.add_message("Password set and initial key derived")
         self.schedule_key_update()
     
-    def derive_key_from_password(self, salt=None):
-        # Generate a random salt if not provided
-        if salt is None:
-            salt = os.urandom(16)
+    def derive_key_from_password(self, salt):
+        # # Generate a random salt if not provided
+        # if salt is None:
+        #     salt = os.urandom(16)
         
         # Use PBKDF2 to derive a 256-bit key
-        kdf = PBKDF2HMAC(
+        kdf = PBKDF2HMAC( # key derivation function
             algorithm=hashes.SHA256(),
             length=32,  # 256 bits
             salt=salt,
@@ -143,7 +149,9 @@ class SecureChatApp:
         
         self.key = kdf.derive(self.password.encode())
         self.key_status.config(text=f"Key established: {base64.b64encode(self.key[:8]).decode()}...")
-        
+
+
+
         return salt  # Return salt so it can be shared
     
     def encrypt_message(self, plaintext):
@@ -321,11 +329,11 @@ class SecureChatApp:
             json_data = json.dumps(message_data).encode()
             
             # Send the length first, then the message
-            self.socket.sendall(len(json_data).to_bytes(4, byteorder='big'))
+            self.socket.sendall(len(json_data).to_bytes(4, byteorder='big')) 
             self.socket.sendall(json_data)
             
             self.add_message(f"You: {message}", display_ciphertext)
-            self.message_entry.delete(0, tk.END)
+            self.message_entry.delete(0, tk.END) # resets message field
             
             # Increment message counter
             self.message_counter += 1
