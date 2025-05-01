@@ -16,12 +16,41 @@ SecureChatApp
 A GUI-based secure chatting application utilizing AES-GCM, PBKDF2, web sockets
 to transfer information, and JSON to format messages. 
 
+THIS PROGRAM IS ONLY COMPATABILE ON WINDOWS-BASED/x86-64 SYSTEMS
+    - tkinter does not play nice with Apple Silicon or ARM 
+
+GUIDE TO EXECUTE/RUN PROGRAM:
+    2 METHODS TO EXECUTE:
+
+        Using the source code and terminal:
+            - Ensure all dependencies are installed, all packages used should be installed by default except perhaps the 'cryptography' package.
+            - run 'python secure_chat.py'
+
+        Using the provided .EXE (secure_chat.exe) file:
+            - execute the file as an Administrator
+
+    CONNECTION AND CONTROL FLOW
+
+        If attempting to establish a P2P connection over the internet:
+            - Ensure portfowarding on the default port (12345) is properly configured on the network
+            - Ensure firewall exemptions are in place
+            - Alice's IP should be used as the host and Bob should connect to Alice with the appropriate IP/Port information.
+            - Password must be set after connection but before sending a message.
+
+        If attempting to testrun locally:
+            - You will need to launch two instances of the program locally by:
+                - running secure_chat.exe twice as an admin OR
+                - using two terminals to run the program twice
+            - Connect through the default IP/PORT 
+            - Set password
+            - Send/Recieve messages
+
 © 2025 Zachary Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
 """
 class SecureChatApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Secure P2P Chat")
+        self.root.title("SecChat")
         self.root.geometry("600x600")
         
         # Connection variables
