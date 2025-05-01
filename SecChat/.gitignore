@@ -5,4 +5,24 @@
 dockerfile
 requirements.txt
 secure_chat.spec
-/SecChat
+/SecChat..
+
+# Python virtual environment
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+/dist/
+/build/
+*.egg-info/
+
+# Project-specific files to ignore
+.dockerignore
+dockerfile
+requirements.txt
+secure_chat.spec
+
+# Incorrect directory reference - fixed
+# /SecChat..
