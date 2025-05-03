@@ -23,27 +23,27 @@ GUIDE TO EXECUTE/RUN PROGRAM:
     2 METHODS TO EXECUTE:
 
         Using the source code and terminal:
-            - Ensure all dependencies are installed, all packages used should be installed by default except perhaps the 'cryptography' package.
+            - Ensure all dependencies are installed, all packages used should be installed by default except maybe the 'cryptography' package.
             - run 'python secure_chat.py'
 
         Using the provided .EXE (secure_chat.exe) file:
             - execute the file as an Administrator
 
-    CONNECTION AND CONTROL FLOW
+    USER GUIDE
 
         If attempting to establish a P2P connection over the internet:
-            - Ensure portfowarding on the default port (12345) is properly configured on the network
-            - Ensure firewall exemptions are in place
+            - Ensure port fowarding on the default port (12345) is properly configured on the network.
+            - Ensure firewall exemptions are in place if necessary.
             - Alice's IP should be used as the host and Bob should connect to Alice with the appropriate IP/Port information.
-            - Password must be set after connection but before sending a message.
+            - The password must be set after connection but before sending a message.
 
         If attempting to testrun locally:
             - You will need to launch two instances of the program locally by:
-                - running secure_chat.exe twice as an admin OR
-                - using two terminals to run the program twice
-            - Connect through the default IP/PORT 
-            - Set password
-            - Send/Recieve messages
+                - Running secure_chat.exe twice as an admin OR
+                - using two terminals to run the program twice.
+            - Connect through the default IP/PORT. 
+            - Set the password.
+            - Send a messages ☺.
 
 © 2025 Zachary Lilley - Thorpe Mayes - Javier Zertuche. All rights reserved.
 """
@@ -80,7 +80,7 @@ class SecureChatApp:
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         
-        # Connection frame
+        # Address Frame
         conn_frame = tk.Frame(main_frame)
         conn_frame.pack(fill=tk.X, pady=5)
         
@@ -229,12 +229,12 @@ class SecureChatApp:
             
             # Start a thread to accept the connection
             def accept_connection():
-                client_socket, client_address = server_socket.accept()
+                client_socket, client_address = server_socket.accept() # Get and store client socket
                 self.socket = client_socket
                 self.peer_address = client_address
                 self.connected = True
                 self.is_alice = True
-                
+
                 self.add_message(f"Connected to {client_address[0]}:{client_address[1]}")
                 self.status_label.config(text=f"Connected to {client_address[0]}", fg="green")
                 
@@ -274,11 +274,12 @@ class SecureChatApp:
             
             # Start the listening thread
             self.listen_thread = threading.Thread(target=self.listen_for_messages)
-            self.listen_thread.daemon = True
+            self.listen_thread.daemon = True # thread only runs while the application is going  
             self.listen_thread.start()
             
+        # Usually throws when ports are no configured properly
         except Exception as e:
-            self.add_message(f"Error connecting: {e}")
+            self.add_message(f"Error connecting: {e}\nHave you properly fowarded port: {port}?")
     
     def listen_for_messages(self):
         while self.connected:
@@ -291,7 +292,7 @@ class SecureChatApp:
                 message_length = int.from_bytes(length_data, byteorder='big')
                 
                 # Then receive the full message
-                data = b''
+                data = b'' # typecasted as a byte string
                 while len(data) < message_length:
                     chunk = self.socket.recv(min(4096, message_length - len(data)))
                     if not chunk:
@@ -301,6 +302,7 @@ class SecureChatApp:
                 if not data:
                     break
                 
+                # JSON observation/action 
                 # Parse the JSON data
                 message_data = json.loads(data.decode())
                 
@@ -415,6 +417,9 @@ class SecureChatApp:
     def manually_update_key(self):
         self.update_key()
 
+"""
+    Application Bootstrap
+"""
 if __name__ == "__main__":
     root = tk.Tk()
     app = SecureChatApp(root)
